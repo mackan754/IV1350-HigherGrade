@@ -7,9 +7,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
- * Outputs the total revenue to a file.
+ * Outputs the total revenue to a file using the Template Method pattern.
  */
-public class TotalRevenueFileLogger implements TotalRevenueObserver {
+public class TotalRevenueFileLogger extends TotalRevenueTemplate {
     private PrintWriter logStream;
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
@@ -21,12 +21,15 @@ public class TotalRevenueFileLogger implements TotalRevenueObserver {
             ioe.printStackTrace();
         }
     }
+    
+    @Override
+    protected void doShowTotalIncome(Amount totalRevenue) throws IOException {
+        String timestamp = LocalDateTime.now().format(DATE_TIME_FORMATTER);
+        logStream.println(timestamp + " Total Revenue: " + totalRevenue.getAmount());
+    }
 
     @Override
-    public void updateTotalRevenue(Amount totalRevenue) {
-        String timestamp = LocalDateTime.now().format(DATE_TIME_FORMATTER);
-        logStream.println(timestamp + "Total Revenue: " + totalRevenue.getAmount());
+    protected void handleErrors(Exception e) {
+        e.printStackTrace();
     }
 }
-
-

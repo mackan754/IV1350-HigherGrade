@@ -1,20 +1,19 @@
 package se.kth.iv1350.processSaleMarcusHampus.view;
 
 import se.kth.iv1350.processSaleMarcusHampus.util.Amount;
-import se.kth.iv1350.processSaleMarcusHampus.util.TotalRevenueObserver;
+import se.kth.iv1350.processSaleMarcusHampus.util.TotalRevenueTemplate;
 
 /**
- * Displays the total revenue on the user interface.
+ * An observer that displays the total revenue in the user interface.
  */
-public class TotalRevenueView implements TotalRevenueObserver {
-
-     /**
-     * Updates and displays the total revenue.
-     * 
-     * @param totalRevenue The total revenue to be displayed.
-     */
+public class TotalRevenueView extends TotalRevenueTemplate {
     @Override
-    public void updateTotalRevenue(Amount totalRevenue) {
+    protected void doShowTotalIncome(Amount totalRevenue) {
         System.out.println("Total Revenue: " + totalRevenue.getAmount());
+    }
+
+    @Override
+    protected void handleErrors(Exception e) {
+        System.err.println("Failed to show total income: " + e.getMessage());
     }
 }
